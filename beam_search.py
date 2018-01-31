@@ -71,7 +71,10 @@ def beam_search(seed, k=5):
     pq.put((-1.0, encoded_seed, 0))
     while pq:
         prev_score, encoding, depth = pq.get()
-        if depth >= 6:
+        # NOTE: COMMENT THIS IF YOU WOULD NOT LIKE TO SEE INTERMEDIATE RESULTS
+        if depth >= 7:
+            print decode([encoding])
+        if depth >= 7 and ends_with_stop_word(encoding):
             return decode([encoding])
         for next_encoded_word, score in successors(encoding, prev_score, maxlen, k=k):
             # don't allow punctuation after punctuation
@@ -108,14 +111,16 @@ if __name__ == '__main__':
     optimizer = RMSprop(lr=0.01)
     model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 
-    model.load_weights(reduce(join,['output', 'models', 'finalWeights']))
+    model.load_weights(reduce(join,['models', 'finalWeights']))
 
 
     while True:
         seed = raw_input('Input a Seed: ')
         print 'Processing...'
+        print 'Will display intermediate results so that you can see how this works!'
         print 'Output: {beam}'.format(beam=beam_search(clean_punctuation(seed)))
 
+    # --- TO TRAIN A NEW MODEL ---
     # print 'Vectorization.'
     # y = np.zeros((len(padded_docs), vocab_size), dtype=np.bool)
     # for i, padded_doc in enumerate(padded_docs):
@@ -125,7 +130,7 @@ if __name__ == '__main__':
     # for i in range(0, 50):
     #     print 'Epoch: {i}'.format(i=i)
     #     model.fit(padded_docs, y, batch_size=2048, nb_epoch=1)
-    #     if i > 4 and not i % 5:
+    #     if i > 4:
     #         model.save_weights('finalWeights'.format(i=i), overwrite=True)
     #     print '\n'
     #     for i in range(5):
