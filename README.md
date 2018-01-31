@@ -6,7 +6,7 @@ Inspired by a request for research from OpenAI, I developed a word-level recurre
 * [h5py](http://docs.h5py.org/en/latest/build.html)
 
 ## Generate Jokes
-1. [Download the Model](https://www.dropbox.com/s/h2id25pjswkhs78/finalWeights?dl=0)
+1. [Download the Model](https://www.dropbox.com/s/69z0rud50epojev/finalWeights?dl=0)
 2. Place it in the Models Directory. Keep the name the same (finalWeights)
 3. Run Beam Search 
 
